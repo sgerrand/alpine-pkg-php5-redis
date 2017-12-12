@@ -61,6 +61,20 @@ jobs:
             ghr -u sgerrand -r $CIRCLE_PROJECT_REPONAME -prerelease -delete unreleased packages
             ghr -u sgerrand -r $CIRCLE_PROJECT_REPONAME -prerelease unreleased packages/builder/x86_64
     working_directory: ~/alpine-pkg-php5-redis
+  release-tag:
+    docker:
+      - image: golang:alpine
+    steps:
+      - attach_workspace:
+          at: .
+      - run: apk add --no-cache --no-progress git
+      - run: go get github.com/tcnksm/ghr
+      - run:
+          name: Release packages
+          command: |
+            ghr -u sgerrand -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG packages
+            ghr -u sgerrand -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG packages/builder/x86_64
+    working_directory: ~/alpine-pkg-php5-redis
 workflows:
   version: 2
   build-test-release:
@@ -72,3 +86,9 @@ workflows:
           filters:
             branches:
               only: master
+      - release-tag:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /[0-9]+(\.[0-9]+){1,2}(\-r\d+)?$/

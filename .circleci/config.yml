@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:git
+      - image: redis:alpine
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Create Docker volumes
+          command: |
+            docker create --name input --volume /home/builder/package alpine:3.6 /bin/true
+            docker create --name output --volume /packages alpine:3.6 /bin/true
+            docker cp ./APKBUILD input:/home/builder/package
+      - run:
+          name: Build packages
+          command: |
+            docker run --env RSA_PRIVATE_KEY="$RSA_PRIVATE_KEY" --env RSA_PRIVATE_KEY_NAME="sgerrand.rsa" \
+                       --volumes-from input --volumes-from output sgerrand/alpine-abuild:v5
+      - run:
+          name: Extract packages
+          command: |
+            mkdir -p packages
+            docker cp output:/packages/builder packages/
+      - run:
+          name: Test installing packages
+          command: |
+            echo -e "$RSA_PUBLIC_KEY" > /etc/apk/keys/sgerrand.rsa.pub
+            apk add --no-progress --update-cache --upgrade ./packages/builder/x86_64/php5-redis-*.apk
+      - run:
+          name: Test PHP module
+          command: |
+             apk add --no-cache --no-progress php5-cli
+             php5 -r '$redis = new Redis(); var_dump($redis->connect("127.0.0.1"));' | grep 'bool(true)'
+      - run:
+          name: Remove Docker volumes
+          command: |
+            docker rm input
+            docker rm output
+          when: always
+      - store_artifacts:
+          destination: pkgs
+          path: packages

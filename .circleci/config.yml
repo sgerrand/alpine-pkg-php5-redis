@@ -42,3 +42,4 @@ jobs:
       - store_artifacts:
           destination: pkgs
           path: packages
+    working_directory: ~/alpine-pkg-php5-redis

@@ -16,7 +16,7 @@ The current installation method for these packages is to pull them in using
 
     apk --no-cache add ca-certificates wget
     wget --quiet --output-document=/etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-    wget https://github.com/sgerrand/alpine-pkg-php5-redis/releases/download/3.1.5-r0/php5-redis-3.1.5-r0.apk
-    apk add php5-redis-3.1.5-r0.apk
+    wget https://github.com/sgerrand/alpine-pkg-php5-redis/releases/download/3.1.6-r0/php5-redis-3.1.6-r0.apk
+    apk add php5-redis-3.1.6-r0.apk
 
 [php-redis]: https://pecl.php.net/redis

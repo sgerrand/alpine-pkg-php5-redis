@@ -3,7 +3,7 @@
 _php=php5
 pkgname=$_php-redis
 _pkgrealname=redis
-pkgver=3.1.4
+pkgver=3.1.5
 pkgrel=0
 pkgdesc="PHP extension for interfacing with Redis"
 url="http://pecl.php.net/redis"
@@ -41,6 +41,4 @@ package() {
 	done
 }
 
-md5sums="7af20e191c486c458b5a8e421c024c3d  redis-3.1.4.tgz"
-sha256sums="adebdfd52e8227a4da5d381d325b6eaccd29fd233bcc1b877517b9e8706ef265  redis-3.1.4.tgz"
-sha512sums="dbf3eecfa761d0d3e97781968378d8bcc74e79bf4a0f85d6c2e8338180755e503179bc78b03ae6ee26a5619f439ead77068db3ab18d1b2dbf58e1643bea3a49f  redis-3.1.4.tgz"
+sha512sums="9d19d8ff2af92ef4da5c8d82daec6307c66db7c3f5171f8ad7d834b01f77ac488b66bd74e6223e76ea7bc6936188341f347756e2f0bbb63ce4a149341c3d6a92  redis-3.1.5.tgz"
